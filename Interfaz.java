@@ -44,6 +44,20 @@ public class Interfaz extends JFrame{
             }
         });
 
+        listener = new KeyAdapter() {
+            public void keyPressed(KeyEvent arg0) {
+                //System.out.println(arg0.getKeyCode());
+                if(arg0.getKeyCode() == 10)
+                    System.out.println("A la escucha");
+            }
+        };
+
+        campoErrorMinimo.addKeyListener(listener);
+        campoNombreArchivo.addKeyListener(listener);
+        campoPoblacion.addKeyListener(listener);
+        campoTamX.addKeyListener(listener);
+        campoTamY.addKeyListener(listener);
+
         panelPrincipal.setLayout(new BorderLayout());
         panelCentral.setLayout(new BoxLayout(this.panelCentral, BoxLayout.Y_AXIS));
         panelTam.setLayout(new BoxLayout(this.panelTam, BoxLayout.Y_AXIS));
@@ -134,6 +148,8 @@ public class Interfaz extends JFrame{
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+
+
     }
 
     private JPanel panelPrincipal;
@@ -155,4 +171,5 @@ public class Interfaz extends JFrame{
     private JTextField campoNombreArchivo;
     private JLabel aviso, etiquetaTamX, etiquetaTamY, etiquetaTam;
     private JLabel etiquetaErrorMinimo, etiquetaNombreArchivo;
+    private KeyListener listener;
 }
