@@ -12,7 +12,7 @@ public class InterfazRestricciones extends JFrame {
 
     private void crearInterfaz(Configuracion conf) {
         setTitle("Restricciones");
-        setBounds(450, 100, 425, 400);
+        setBounds(400, 100, 475, 400);
         setResizable(false);
 
         panelPrincipal = new JPanel();
@@ -27,9 +27,9 @@ public class InterfazRestricciones extends JFrame {
         etiquetaY = new JLabel("Y");
         etiquetaRadio = new JLabel("Radio");
         aviso1 = new JLabel("Las unidades son tomadas en cm");
-        campoX = new JTextField(10);
-        campoY = new JTextField(10);
-        campoRadio = new JTextField(10);
+        campoX = new JTextField(12);
+        campoY = new JTextField(12);
+        campoRadio = new JTextField(12);
         botonRegresar = new JButton("Regresar");
         botonResolver = new JButton("Resolver");
         x = new JLabel[c.getNumeroRestricciones()];
@@ -37,7 +37,13 @@ public class InterfazRestricciones extends JFrame {
         r = new JLabel[c.getNumeroRestricciones()];
         restricciones = new JLabel[c.getNumeroRestricciones()];
         res = new Restriccion[c.getNumeroRestricciones()];
+        botonesRestricciones = new JButton[c.getNumeroRestricciones()];
         cont = 0;
+
+        for(int i = 0; i < c.getNumeroRestricciones(); i++) {
+            botonesRestricciones[i] = new JButton("Restriccion " + (i + 1));
+            botonesRestricciones[i].setActionCommand("" + i);
+        }
 
         for(int i = 0; i < c.getNumeroRestricciones(); i++) {
             x[i] = new JLabel("");
@@ -50,10 +56,6 @@ public class InterfazRestricciones extends JFrame {
             res[i] = new Restriccion();
         }
 
-        comboRestricciones = new JComboBox<>();
-
-        for(int i = 0; i < conf.getNumeroRestricciones(); i++)
-            comboRestricciones.addItem(nombresRestricciones[i]);
 
         panelPrincipal.setLayout(new BorderLayout());
         panelCentral.setLayout(new BoxLayout(this.panelCentral, BoxLayout.Y_AXIS));
@@ -67,7 +69,6 @@ public class InterfazRestricciones extends JFrame {
         panelCampoRestricciones.setBackground(Color.decode("#009688"));
         panelEtiquetasRestricciones.setBackground(Color.decode("#009688"));
         panelInferior.setBackground(Color.decode("#009688"));
-        comboRestricciones.setBackground(Color.decode("#009688"));
         panelAvisos.setBackground(Color.decode("#009688"));
 
         aviso1.setForeground(Color.decode("#FFFFFF"));
@@ -99,7 +100,6 @@ public class InterfazRestricciones extends JFrame {
             restricciones[i].setText(restriccionesS[i]);
         } 
 
-        comboRestricciones.setFont(new Font("Sans Regular", Font.BOLD, 16));
         aviso1.setFont(new Font("Sans Regular", Font.BOLD, 12));
         etiquetaX.setFont(new Font("Sans Regular", Font.BOLD, 12));
         etiquetaY.setFont(new Font("Sans Regular", Font.BOLD, 12));
@@ -128,25 +128,6 @@ public class InterfazRestricciones extends JFrame {
             panelEtiquetasRestricciones.add(r[i]);
         }
 
-        comboRestricciones.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                anterior = cont;
-                if((!campoX.getText().equals("")) || (!campoY.getText().equals("")) || (!campoRadio.getText().equals(""))) {
-                    res[anterior].setX(Double.parseDouble(campoX.getText()));
-                    res[anterior].setY(Double.parseDouble(campoY.getText()));
-                    res[anterior].setR(Double.parseDouble(campoRadio.getText()));
-
-                    x[anterior].setText("X: " + res[anterior].getX());
-                    y[anterior].setText("Y: " + res[anterior].getY());
-                    r[anterior].setText("R: " + res[anterior].getR());
-
-                    cont = comboRestricciones.getSelectedIndex();
-                } else {
-                    JOptionPane.showMessageDialog(InterfazRestricciones.this, "Faltan datos");
-                }
-            }
-        });
-
         botonRegresar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
@@ -154,15 +135,42 @@ public class InterfazRestricciones extends JFrame {
             }
         });
 
+        listener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cont = Integer.parseInt(e.getActionCommand());
+                if((!campoX.getText().equals("")) || (!campoY.getText().equals("")) || (!campoRadio.getText().equals(""))) {
+                    res[cont].setXi(Double.parseDouble(campoX.getText()));
+                    res[cont].setYi(Double.parseDouble(campoY.getText()));
+                    res[cont].setRi(Double.parseDouble(campoRadio.getText()));
+
+                    x[cont].setText("X: " + res[cont].getXi());
+                    y[cont].setText("Y: " + res[cont].getYi());
+                    r[cont].setText("R: " + res[cont].getRi());
+
+                    campoX.setText("");
+                    campoY.setText("");
+                    campoRadio.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(InterfazRestricciones.this, "Faltan datos");
+                }
+            }
+        };
+
         botonResolver.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 for(int i = 0; i < c.getNumeroRestricciones(); i++) {
-                    System.out.println("X: " + res[i].getX());
-                    System.out.println("Y: " + res[i].getY());
-                    System.out.println("R: " + res[i].getR());
+                    System.out.println("X: " + res[i].getXi());
+                    System.out.println("Y: " + res[i].getYi());
+                    System.out.println("R: " + res[i].getRi());
                 }
             }
         });
+
+
+        for(int i = 0; i < c.getNumeroRestricciones(); i++) {
+            panelSuperior.add(botonesRestricciones[i]);
+            botonesRestricciones[i].addActionListener(listener);
+        }
 
         panelAvisos.add(aviso1);
         panelCampoRestricciones.add(campoX);
@@ -176,7 +184,7 @@ public class InterfazRestricciones extends JFrame {
         etiquetaY.setHorizontalAlignment(SwingConstants.CENTER);
         etiquetaRadio.setHorizontalAlignment(SwingConstants.CENTER);
 
-        panelSuperior.add(comboRestricciones);
+        
         panelCentral.add(panelRestricciones);
         panelCentral.add(panelCampoRestricciones);
         panelCentral.add(panelEtiquetasRestricciones);
@@ -202,20 +210,13 @@ public class InterfazRestricciones extends JFrame {
     private JPanel panelEtiquetasRestricciones;
     private JPanel panelAvisos;
     private JPanel panelInferior;
-    private JComboBox<String> comboRestricciones;
-    private String[] nombresRestricciones = {
-        "Restriccion 1",
-        "Restriccion 2",
-        "Restriccion 3",
-        "Restriccion 4"
-    };
-
     private JLabel etiquetaX, etiquetaY, etiquetaRadio;
     private JLabel aviso1;
     private JLabel[] x;
     private JLabel[] y;
     private JLabel[] r;
     private JLabel[] restricciones;
+    private JButton[] botonesRestricciones;
     
     private String[] xS = {
         "x1: ",
@@ -249,6 +250,6 @@ public class InterfazRestricciones extends JFrame {
     private JButton botonResolver, botonRegresar;
     private Interfaz i;
     private int cont;
-    private int anterior;
+    private ActionListener listener;
     private Restriccion[] res;
 }
