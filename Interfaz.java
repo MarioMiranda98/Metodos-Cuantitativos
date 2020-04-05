@@ -37,18 +37,53 @@ public class Interfaz extends JFrame{
         campoTamY = new JTextField(3);
         campoErrorMinimo = new JTextField(3);
         campoNombreArchivo = new JTextField(20);
+        tresRestricciones.setActionCommand("3");
+        cuatroRestricciones.setActionCommand("4");
 
         botonContinuar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println("A la escucha");
+                //System.out.println("A la escucha");
+                if((!campoPoblacion.getText().equals("")) || (!campoTamX.getText().equals("")) || (!campoTamY.getText().equals("")) || (!campoErrorMinimo.getText().equals("")) || (!campoNombreArchivo.getText().equals(""))) {
+                    //System.out.println(cantidadRestricciones.getSelection().getActionCommand());
+                    
+                    numeroRestricciones = Integer.parseInt(cantidadRestricciones.getSelection().getActionCommand());
+                    tamX = Integer.parseInt(campoTamX.getText());
+                    tamY = Integer.parseInt(campoTamY.getText());
+                    numeroPoblacion = Integer.parseInt(campoPoblacion.getText());
+                    errorMinimo = Integer.parseInt(campoErrorMinimo.getText());
+                    nombreArchivo = campoNombreArchivo.getText();
+
+                    c = new Configuracion(numeroRestricciones, tamX, tamY, numeroPoblacion, errorMinimo, nombreArchivo);
+                    new InterfazRestricciones(c, Interfaz.this);
+                    borrado();
+                    setVisible(false);
+                } else 
+                    JOptionPane.showMessageDialog(Interfaz.this, "Faltan datos");
             }
         });
 
         listener = new KeyAdapter() {
             public void keyPressed(KeyEvent arg0) {
                 //System.out.println(arg0.getKeyCode());
-                if(arg0.getKeyCode() == 10)
-                    System.out.println("A la escucha");
+                if(arg0.getKeyCode() == 10) {
+                    //System.out.println("A la escucha");
+                    if((!campoPoblacion.getText().equals("")) || (!campoTamX.getText().equals("")) || (!campoTamY.getText().equals("")) || (!campoErrorMinimo.getText().equals("")) || (!campoNombreArchivo.getText().equals(""))) {
+                        //System.out.println(cantidadRestricciones.getSelection().getActionCommand());
+                        
+                        numeroRestricciones = Integer.parseInt(cantidadRestricciones.getSelection().getActionCommand());
+                        tamX = Integer.parseInt(campoTamX.getText());
+                        tamY = Integer.parseInt(campoTamY.getText());
+                        numeroPoblacion = Integer.parseInt(campoPoblacion.getText());
+                        errorMinimo = Integer.parseInt(campoErrorMinimo.getText());
+                        nombreArchivo = campoNombreArchivo.getText();
+    
+                        c = new Configuracion(numeroRestricciones, tamX, tamY, numeroPoblacion, errorMinimo, nombreArchivo);
+                        new InterfazRestricciones(c, Interfaz.this);
+                        borrado();
+                        setVisible(false);
+                    } else 
+                        JOptionPane.showMessageDialog(Interfaz.this, "Faltan datos");
+                }
             }
         };
 
@@ -141,13 +176,39 @@ public class Interfaz extends JFrame{
 
         botonContinuar.setBackground(Color.decode("#BDBDBD"));
         botonContinuar.setForeground(Color.decode("#212121"));
-        
+
+        etiquetaCantidadRestricciones.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        tresRestricciones.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        cuatroRestricciones.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        etiquetaErrorMinimo.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        etiquetaNombreArchivo.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        etiquetaPoblacion.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        etiquetaTam.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        etiquetaTamX.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        etiquetaTamY.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        aviso.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        campoErrorMinimo.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        campoPoblacion.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        campoNombreArchivo.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        campoTamX.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        campoTamY.setFont(new Font("Sans Regular", Font.BOLD, 12));
+
         panelPrincipal.add(panelCentral, BorderLayout.CENTER);
         panelPrincipal.add(panelInferior, BorderLayout.SOUTH);
         add(panelPrincipal);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    private void borrado() {
+        tresRestricciones.setSelected(true);
+        cuatroRestricciones.setSelected(false);
+        campoErrorMinimo.setText("");
+        campoNombreArchivo.setText("");
+        campoPoblacion.setText("");
+        campoTamX.setText("");
+        campoTamY.setText("");
     }
 
     private JPanel panelPrincipal;
@@ -170,4 +231,10 @@ public class Interfaz extends JFrame{
     private JLabel aviso, etiquetaTamX, etiquetaTamY, etiquetaTam;
     private JLabel etiquetaErrorMinimo, etiquetaNombreArchivo;
     private KeyListener listener;
+    private Configuracion c;
+    private int numeroRestricciones;
+    private int tamX, tamY;
+    private int errorMinimo;
+    private int numeroPoblacion;
+    private String nombreArchivo;
 }
