@@ -10,7 +10,6 @@ public class Integrante {
     public int getBitsY() { return this.bitsY; }
     public String getBinario() { return this.binario; }
     public String getBinarioPadre() { return this.binarioPadre; }
-    public int getIdGeneracion() { return this.idGeneracion; }
     public double getFitness() { return this.fitness; }
 
     public void setLongitud(int longitud) { this.longitud = longitud; }
@@ -18,7 +17,6 @@ public class Integrante {
     public void setBitsY(int bitsY) { this.bitsY = bitsY; }
     public void setBinario(String binario) { this.binario = binario; } 
     public void setBinarioPadre(String binarioPadre) { this.binarioPadre = binarioPadre; }
-    public void setIdGeneracion(int idGeneracion) { this.idGeneracion = idGeneracion; }
     public void setFitness(double fitness) { this.fitness = fitness; }
 
     protected String mutar() {
@@ -41,7 +39,7 @@ public class Integrante {
     protected double valorDecimalX(int limiteMenorX, int limiteMayorX, int mjx) {
         double exp = Math.pow(2, mjx);
         double fraccion = ((limiteMayorX - limiteMenorX) / (exp - 1));
-        int decimal = binarioADecimal(this.bitsX, 0);
+        long decimal = binarioADecimal(bitsX, 0);
 
         double res = limiteMenorX + (decimal * fraccion);
 
@@ -51,23 +49,26 @@ public class Integrante {
     protected double valorDecimalY(int limiteMenorY, int limiteMayorY, int mjy) {
         double exp = Math.pow(2, mjy);
         double fraccion = ((limiteMayorY - limiteMenorY) / (exp - 1));
-        int decimal = binarioADecimal(this.bitsY, this.bitsX);
+        long decimal = binarioADecimal(bitsY, bitsX);
 
         double res = limiteMenorY + (decimal * fraccion);
 
         return res;
     }
 
-    private int binarioADecimal(int bits, int inicio) {
+    private long binarioADecimal(int bits, int inicio) {
         char[] aux = new char[bits];
         int suma = 0;
 
-        for(int i = bits - 1, j = 0; i >= 0; i--)
-            aux[i] = this.binario.charAt(j++);
+        for(int i = bits - 1, j = inicio; i >= 0; i--)
+            aux[i] = binario.charAt(j++);
 
         for(int i = 0; i < bits; i++) {
-            int bin = (int) (aux[i]);
-            suma += bin * (int) (Math.pow(2, i)); 
+            int bin = (int) (aux[i] - 48);
+            if(bin == 0)
+                suma += 0;
+            else
+                suma += bin * (int) (Math.pow(2, i)); 
         }
 
         return suma;
@@ -78,6 +79,5 @@ public class Integrante {
     private int bitsY;
     private String binario;
     private String binarioPadre;
-    private int idGeneracion;
     private double fitness;
 }

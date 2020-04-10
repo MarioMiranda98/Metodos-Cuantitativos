@@ -13,7 +13,7 @@ public class Restriccion {
     public double getRi() { return this.ri; }
     public double getX() { return this.x; }
     public double getY() {return this.y; }
-    public int getErrorMinimo() { return this.errorMinimo; }
+    public double getErrorMinimo() { return this.errorMinimo; }
     public boolean getCumplida() { return this.cumplida; }
 
     public void setXi(double xi) { this.xi = xi; }
@@ -21,7 +21,7 @@ public class Restriccion {
     public void setRi(double ri) { this.ri = ri;}
     public void setX(double x) { this.x = x; }
     public void setY(double y) { this.y = y; }
-    public void setErrorMinimo(int errorMinimo) { this.errorMinimo = errorMinimo; }
+    public void setErrorMinimo(double errorMinimo) { this.errorMinimo = errorMinimo; }
     public void setCumplida(boolean cumplida) { this.cumplida = cumplida; }
 
     protected void evaluarRestriccion() {
@@ -43,6 +43,6 @@ public class Restriccion {
     private double ri;
     private double x;
     private double y;
-    private int errorMinimo;
+    private double errorMinimo;
     private boolean cumplida;
 }

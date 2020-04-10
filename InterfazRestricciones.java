@@ -158,11 +158,13 @@ public class InterfazRestricciones extends JFrame {
 
         botonResolver.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                for(int i = 0; i < c.getNumeroRestricciones(); i++) {
+                /*for(int i = 0; i < c.getNumeroRestricciones(); i++) {
                     System.out.println("X: " + res[i].getXi());
                     System.out.println("Y: " + res[i].getYi());
                     System.out.println("R: " + res[i].getRi());
-                }
+                }*/
+
+                new Genetico(conf, res);
             }
         });
 

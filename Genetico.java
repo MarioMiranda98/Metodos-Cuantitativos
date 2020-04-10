@@ -8,21 +8,47 @@ public class Genetico {
         tamY = conf.getTamY();
         nombreArchivo = conf.getNombreArchivo();
         tamPoblacion = conf.getNumeroPoblaion();
-        errorMinimo = conf.getErrorMinimo();
+        errorMinimo = conf.calcularError(restricciones);
+
+        negX = negY = false;
+        mjx = mjy = k = 0;
+
+        obtenerLimites();
+        longitudCadenaCromosomas = obtenerLongitudCadenaCromosomas();
+        integrantes = new Integrante[tamPoblacion];
 
         for(int i = 0; i < cantidadRestricciones; i++)
-            restricciones[i].setErrorMinimo((int) (Math.pow(errorMinimo, 2)));
+            restricciones[i].setErrorMinimo(errorMinimo);
+
+        for(int i = 0; i < tamPoblacion; i++)
+            integrantes[i] = new Integrante(longitudCadenaCromosomas, 0, 0);
+
+        generarIntegrantes();
     }
 
-    private void obtenerLimites(int tamX, int tamY) {
-        limiteMayorX = tamX;
-        limiteMenorX = (-1) * tamX;
+    private void obtenerLimites() {
+        for(int i = 0; i < conf.getNumeroRestricciones(); i++) {
+            if((restricciones[i].getXi()) < 0)
+                negX = true;
+            if((restricciones[i].getYi()) < 0)
+                negY = true;
+        }
+
+        if(negX)
+            limiteMenorX = (-1) * tamX;
+        else 
+            limiteMenorX = 0;
+
+        if(negY)
+            limiteMenorY = (-1) * tamY;
+        else 
+            limiteMenorX = 0;
+
+        limiteMayorX = tamX; 
         limiteMayorY = tamY;
-        limiteMenorY = (-1) * tamY;
     }
 
     private int obtenerLongitudCadenaCromosomas() {
-        int mjx, mjy;
         int limX, limY;
         double numerador, denominador;
         double p;
@@ -43,6 +69,45 @@ public class Genetico {
         return (mjx + mjy);
     }
 
+    private String generarBinario() {
+        char[] aux = new char[longitudCadenaCromosomas];
+
+        for(int i = 0; i < longitudCadenaCromosomas; i++) {
+            if(Math.floor((Math.random() * 100) % 2) == 0)
+                aux[i] = '0';
+            else 
+                aux[i] = '1'; 
+        }
+
+        return new String(aux);
+    }
+
+    private void generarIntegrantes() {
+        double x, y;
+        for(int i = 0; i < tamPoblacion; i++) {
+            String binario = generarBinario();
+            integrantes[i].setBinario(binario);
+            integrantes[i].setBinarioPadre(binario);
+            x = integrantes[i].valorDecimalX(limiteMenorX, limiteMayorX, mjx);
+            y = integrantes[i].valorDecimalY(limiteMenorY, limiteMayorY, mjy);
+
+            for(int j = 0; j < cantidadRestricciones; j++) {
+                restricciones[j].setX(x);
+                restricciones[j].setY(y);
+
+                restricciones[j].evaluarRestriccion();
+                if(!restricciones[j].getCumplida())
+                    k++;
+            }
+
+            if(k > 0)
+                i--;
+        }
+
+        for(int i = 0; i < tamPoblacion; i++)
+            System.out.println(integrantes[i].getBinario());
+    }
+
     private Configuracion conf;
     private Restriccion[] restricciones;
     private final int MAX_ITERACIONES = 100;
@@ -54,5 +119,9 @@ public class Genetico {
     private int limiteMayorY, limiteMenorY;
     private String nombreArchivo;
     private int tamPoblacion;
-    private int errorMinimo;
+    private double errorMinimo;
+    private boolean negX, negY;
+    private Integrante[] integrantes;
+    private int mjx, mjy, k;
+    private boolean[] cumple;
 }
