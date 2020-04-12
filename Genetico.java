@@ -12,18 +12,23 @@ public class Genetico {
 
         negX = negY = false;
         mjx = mjy = k = 0;
-
+        escritor = new Escritor(nombreArchivo);
+        tiempo = new Tiempo();
+        
         obtenerLimites();
         longitudCadenaCromosomas = obtenerLongitudCadenaCromosomas();
         integrantes = new Integrante[tamPoblacion];
-
+        
         for(int i = 0; i < cantidadRestricciones; i++)
             restricciones[i].setErrorMinimo(errorMinimo);
-
+        
         for(int i = 0; i < tamPoblacion; i++)
             integrantes[i] = new Integrante(longitudCadenaCromosomas, 0, 0);
-
+        
+        z = new FuncionObjetivo(cantidadRestricciones, restricciones);
         generarIntegrantes();
+        calcularFitness();
+        new InterfazResultados(restricciones, integrantes[0], cantidadRestricciones);
     }
 
     private void obtenerLimites() {
@@ -88,8 +93,12 @@ public class Genetico {
             String binario = generarBinario();
             integrantes[i].setBinario(binario);
             integrantes[i].setBinarioPadre(binario);
+            integrantes[i].setBitsX(mjx);
+            integrantes[i].setBitsY(mjy);
             x = integrantes[i].valorDecimalX(limiteMenorX, limiteMayorX, mjx);
             y = integrantes[i].valorDecimalY(limiteMenorY, limiteMayorY, mjy);
+            integrantes[i].setValX(x);
+            integrantes[i].setValY(y);
 
             for(int j = 0; j < cantidadRestricciones; j++) {
                 restricciones[j].setX(x);
@@ -103,14 +112,20 @@ public class Genetico {
             if(k > 0)
                 i--;
         }
-
-        for(int i = 0; i < tamPoblacion; i++)
-            System.out.println(integrantes[i].getBinario());
     }
+
+    private void calcularFitness() {
+        for(int i = 0; i < tamPoblacion; i++) {
+            integrantes[i].setFitness(z.evaluarFuncionObjetivo(integrantes[i]));
+        }
+    }
+
+    //TODO:Implementar Seleccion 
 
     private Configuracion conf;
     private Restriccion[] restricciones;
     private final int MAX_ITERACIONES = 100;
+    private final int MAX_TIEMPO = 60;
     private int cantidadRestricciones;
     private final int BITS_PRESICION = 4;
     private int longitudCadenaCromosomas;
@@ -123,5 +138,7 @@ public class Genetico {
     private boolean negX, negY;
     private Integrante[] integrantes;
     private int mjx, mjy, k;
-    private boolean[] cumple;
+    private FuncionObjetivo z;
+    private Escritor escritor;
+    private Tiempo tiempo;
 }

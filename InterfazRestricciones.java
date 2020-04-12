@@ -132,6 +132,7 @@ public class InterfazRestricciones extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
                 i.setVisible(true);
+                borrado();
             }
         });
 
@@ -165,6 +166,7 @@ public class InterfazRestricciones extends JFrame {
                 }*/
 
                 new Genetico(conf, res);
+                setVisible(false);
             }
         });
 
@@ -201,6 +203,19 @@ public class InterfazRestricciones extends JFrame {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    private void borrado() {
+        for(int i = 0; i < c.getNumeroRestricciones(); i++) {
+            x[i].setText(xS[i]);
+            y[i].setText(yS[i]);
+            r[i].setText(rS[i]);
+            restricciones[i].setText(restriccionesS[i]);
+
+            res[i].setXi(0.0);
+            res[i].setYi(0.0);
+            res[i].setRi(0.0);
+        } 
     }
 
     private Configuracion c;

@@ -36,6 +36,10 @@ public class Restriccion {
 
         if(res <= errorMinimo) 
             cumplida = true;
+
+        /*System.out.println("Xi: " + xi + ", Yi: " + yi + ", Ri: " + ri + ", E: " +errorMinimo);
+        System.out.println("X: " + x + ", Y: " + y + ", C: " + cumplida);
+        System.out.println("resX: " + resX + ", resY: " + resY + ", resR: " + resR);*/
     }
 
     private double xi;

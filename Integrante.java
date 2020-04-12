@@ -11,6 +11,8 @@ public class Integrante {
     public String getBinario() { return this.binario; }
     public String getBinarioPadre() { return this.binarioPadre; }
     public double getFitness() { return this.fitness; }
+    public double getValX() { return this.valX; }
+    public double getValY() { return this.valY; }
 
     public void setLongitud(int longitud) { this.longitud = longitud; }
     public void setBitsX(int bitsX) { this.bitsX = bitsX; }
@@ -18,6 +20,10 @@ public class Integrante {
     public void setBinario(String binario) { this.binario = binario; } 
     public void setBinarioPadre(String binarioPadre) { this.binarioPadre = binarioPadre; }
     public void setFitness(double fitness) { this.fitness = fitness; }
+    public void setValX(double valX) { this.valX = valX; }
+    public void setValY(double valY) { this.valY = valY; }
+
+    //TODO:Hacer reproduccion y cruce
 
     protected String mutar() {
         int posicion = (int) Math.floor((Math.random() * (0 - longitud) + (longitud)));
@@ -80,4 +86,5 @@ public class Integrante {
     private String binario;
     private String binarioPadre;
     private double fitness;
+    private double valX, valY;
 }
