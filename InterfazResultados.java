@@ -5,10 +5,11 @@ import java.awt.event.*;
 
 public class InterfazResultados extends JFrame {
     private static final long serialVersionUID = 3L;
-    public InterfazResultados(Restriccion[] restricciones, Integrante integrante, int cantidadRestricciones) {
+    public InterfazResultados(Restriccion[] restricciones, Integrante integrante, Configuracion conf) {
         this.restricciones = restricciones;
         this.integrante = integrante;
-        this.cantidadRestricciones = cantidadRestricciones;
+        this.conf = conf;
+        this.cantidadRestricciones = conf.getNumeroRestricciones();
         interfaz();
         accionBotones();
     }
@@ -42,6 +43,7 @@ public class InterfazResultados extends JFrame {
         area = new JTextArea(50, 50);
         cargarArchivo = new JButton("Archivo");
         graficar = new JButton("Graficar");
+        otra = new JButton("Otra");
 
         area.setLineWrap(true);
         area.setEditable(false);
@@ -103,6 +105,7 @@ public class InterfazResultados extends JFrame {
         panelResultados.add(yRes);
         
         panelArea.add(new JScrollPane(area));
+        panelBotones.add(otra);
         panelBotones.add(cargarArchivo);
         panelBotones.add(graficar);
         panelCentral.add(panelResultados);
@@ -135,6 +138,17 @@ public class InterfazResultados extends JFrame {
                 JOptionPane.showMessageDialog(InterfazResultados.this, "Si da tiempo lo hago");
             } 
         });
+
+        otra.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String nombre = JOptionPane.showInputDialog(InterfazResultados.this, "Nombre del nuevo archivo");
+                if(nombre != null) {
+                    conf.setArchivo(nombre);
+                    new Genetico(conf, restricciones);
+                    setVisible(false);
+                }
+            }
+        });
     }
 
     private void leeArchivo(File f) {
@@ -159,6 +173,7 @@ public class InterfazResultados extends JFrame {
     private Restriccion[] restricciones;
     private Integrante integrante;
     private int cantidadRestricciones;
+    private Configuracion conf;
 
     private JPanel panelPrincipal;
     private JPanel panelSuperior;
@@ -196,4 +211,5 @@ public class InterfazResultados extends JFrame {
 
     private JTextArea area;
     private JButton cargarArchivo, graficar;
+    private JButton otra;
 }

@@ -36,7 +36,7 @@ public class FuncionObjetivo {
 
             res = resX + resY - resR;
 
-            resultado += Math.pow(res, 2);
+            resultado += (-1) * Math.pow(res, 2);
         }
 
         return resultado;

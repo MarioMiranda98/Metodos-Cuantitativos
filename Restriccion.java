@@ -42,6 +42,21 @@ public class Restriccion {
         System.out.println("resX: " + resX + ", resY: " + resY + ", resR: " + resR);*/
     }
 
+    protected static int evaluarRestricciones(Restriccion[] restricciones, int cantidadRestricciones, double x, double y) {
+        int k = 0;
+
+        for(int j = 0; j < cantidadRestricciones; j++) {
+            restricciones[j].setX(x);
+            restricciones[j].setY(y);
+
+            restricciones[j].evaluarRestriccion();
+            if(!restricciones[j].getCumplida())
+                k++;
+        }
+
+        return k;
+    }
+
     private double xi;
     private double yi;
     private double ri;

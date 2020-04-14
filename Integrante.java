@@ -9,7 +9,6 @@ public class Integrante {
     public int getBitsX() { return this.bitsX; }
     public int getBitsY() { return this.bitsY; }
     public String getBinario() { return this.binario; }
-    public String getBinarioPadre() { return this.binarioPadre; }
     public double getFitness() { return this.fitness; }
     public double getValX() { return this.valX; }
     public double getValY() { return this.valY; }
@@ -18,28 +17,28 @@ public class Integrante {
     public void setBitsX(int bitsX) { this.bitsX = bitsX; }
     public void setBitsY(int bitsY) { this.bitsY = bitsY; }
     public void setBinario(String binario) { this.binario = binario; } 
-    public void setBinarioPadre(String binarioPadre) { this.binarioPadre = binarioPadre; }
     public void setFitness(double fitness) { this.fitness = fitness; }
     public void setValX(double valX) { this.valX = valX; }
     public void setValY(double valY) { this.valY = valY; }
 
-    //TODO:Hacer reproduccion y cruce
-
-    protected String mutar() {
+    protected void mutar() {
         int posicion = (int) Math.floor((Math.random() * (0 - longitud) + (longitud)));
+        double p = Math.random();
         char[] aux = new char[longitud];
 
         for(int i = 0; i < longitud; i++)
             aux[i] = this.binario.charAt(i);
 
-        if(aux[posicion] == '1')
-            aux[posicion] = '0';
-        else 
-            aux[posicion] = '1';
+        if(p > PROB_MUTACION) {
+            if(aux[posicion] == '1')
+                aux[posicion] = '0';
+            else 
+                aux[posicion] = '1';
 
-        this.binario = new String(aux);
+            this.binario = new String(aux);
 
-        return binario;
+            this.setBinario(binario);
+        }
     }
 
     protected double valorDecimalX(int limiteMenorX, int limiteMayorX, int mjx) {
@@ -84,7 +83,7 @@ public class Integrante {
     private int bitsX;
     private int bitsY;
     private String binario;
-    private String binarioPadre;
     private double fitness;
     private double valX, valY;
+    private final double PROB_MUTACION = 0.4;
 }

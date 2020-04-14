@@ -55,5 +55,5 @@ public class Configuracion {
     private int numeroPoblacion;
     private String archivo;
     private double errorRelativo;
-    private final double ERROR = 0.05;
+    private final double ERROR = 0.025;
 }
