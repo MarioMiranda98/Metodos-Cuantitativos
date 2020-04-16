@@ -21,7 +21,8 @@ public class Integrante {
     public void setValX(double valX) { this.valX = valX; }
     public void setValY(double valY) { this.valY = valY; }
 
-    protected void mutar() {
+    protected int mutar() {
+        int muto = 0;
         int posicion = (int) Math.floor((Math.random() * (0 - longitud) + (longitud)));
         double p = Math.random();
         char[] aux = new char[longitud];
@@ -38,7 +39,10 @@ public class Integrante {
             this.binario = new String(aux);
 
             this.setBinario(binario);
+            muto = 1;
         }
+
+        return muto;
     }
 
     protected double valorDecimalX(int limiteMenorX, int limiteMayorX, int mjx) {

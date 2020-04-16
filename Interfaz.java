@@ -7,7 +7,7 @@ public class Interfaz extends JFrame{
 
     public Interfaz() {
         setTitle("Trilateracion");
-        setBounds(550, 150, 250, 350);
+        setBounds(550, 150, 250, 250);
         setResizable(false);
 
         panelPrincipal = new JPanel();
@@ -16,7 +16,6 @@ public class Interfaz extends JFrame{
         panelCampo = new JPanel();
         panelRadioButton = new JPanel();
         panelAviso = new JPanel();
-        panelNombreArchivo = new JPanel();
         panelTam = new JPanel();
         panelTamXY = new JPanel();
         tresRestricciones = new JRadioButton("3", true);
@@ -29,27 +28,21 @@ public class Interfaz extends JFrame{
         etiquetaTam = new JLabel("Tama\u00f1o del primer cuadrante");
         etiquetaTamX = new JLabel("X: ");
         etiquetaTamY = new JLabel("Y: ");
-        etiquetaNombreArchivo = new JLabel("Nombre Archivo de Salida:");
         campoPoblacion = new JTextField(6);
         campoTamX = new JTextField(3);
         campoTamY = new JTextField(3);
-        campoNombreArchivo = new JTextField(20);
         tresRestricciones.setActionCommand("3");
         cuatroRestricciones.setActionCommand("4");
 
         botonContinuar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //System.out.println("A la escucha");
-                if((!campoPoblacion.getText().equals("")) || (!campoTamX.getText().equals("")) || (!campoTamY.getText().equals("")) || (!campoNombreArchivo.getText().equals(""))) {
-                    //System.out.println(cantidadRestricciones.getSelection().getActionCommand());
-                    
+                if((!campoPoblacion.getText().equals("")) || (!campoTamX.getText().equals("")) || (!campoTamY.getText().equals(""))) {
                     numeroRestricciones = Integer.parseInt(cantidadRestricciones.getSelection().getActionCommand());
                     tamX = Integer.parseInt(campoTamX.getText());
                     tamY = Integer.parseInt(campoTamY.getText());
                     numeroPoblacion = Integer.parseInt(campoPoblacion.getText());
-                    nombreArchivo = campoNombreArchivo.getText();
 
-                    c = new Configuracion(numeroRestricciones, tamX, tamY, numeroPoblacion, nombreArchivo);
+                    c = new Configuracion(numeroRestricciones, tamX, tamY, numeroPoblacion);
                     new InterfazRestricciones(c, Interfaz.this);
                     borrado();
                     setVisible(false);
@@ -60,19 +53,14 @@ public class Interfaz extends JFrame{
 
         listener = new KeyAdapter() {
             public void keyPressed(KeyEvent arg0) {
-                //System.out.println(arg0.getKeyCode());
                 if(arg0.getKeyCode() == 10) {
-                    //System.out.println("A la escucha");
-                    if((!campoPoblacion.getText().equals("")) || (!campoTamX.getText().equals("")) || (!campoTamY.getText().equals("")) || (!campoNombreArchivo.getText().equals(""))) {
-                        //System.out.println(cantidadRestricciones.getSelection().getActionCommand());
-                        
+                    if((!campoPoblacion.getText().equals("")) || (!campoTamX.getText().equals("")) || (!campoTamY.getText().equals(""))) {
                         numeroRestricciones = Integer.parseInt(cantidadRestricciones.getSelection().getActionCommand());
                         tamX = Integer.parseInt(campoTamX.getText());
                         tamY = Integer.parseInt(campoTamY.getText());
                         numeroPoblacion = Integer.parseInt(campoPoblacion.getText());
-                        nombreArchivo = campoNombreArchivo.getText();
     
-                        c = new Configuracion(numeroRestricciones, tamX, tamY, numeroPoblacion, nombreArchivo);
+                        c = new Configuracion(numeroRestricciones, tamX, tamY, numeroPoblacion);
                         new InterfazRestricciones(c, Interfaz.this);
                         borrado();
                         setVisible(false);
@@ -82,7 +70,6 @@ public class Interfaz extends JFrame{
             }
         };
 
-        campoNombreArchivo.addKeyListener(listener);
         campoPoblacion.addKeyListener(listener);
         campoTamX.addKeyListener(listener);
         campoTamY.addKeyListener(listener);
@@ -108,15 +95,11 @@ public class Interfaz extends JFrame{
         panelTam.add(etiquetaTam);
         panelTam.add(panelTamXY);
 
-        panelNombreArchivo.add(etiquetaNombreArchivo);
-        panelNombreArchivo.add(campoNombreArchivo);
-
         panelAviso.add(aviso);
 
         panelCentral.add(panelRadioButton);
         panelCentral.add(panelCampo);
         panelCentral.add(panelTam);
-        panelCentral.add(panelNombreArchivo);
         panelCentral.add(panelAviso);
 
         panelInferior.add(botonContinuar);
@@ -128,17 +111,12 @@ public class Interfaz extends JFrame{
         panelCampo.setBackground(Color.decode("#009688"));
         panelTam.setBackground(Color.decode("#009688"));
         panelTamXY.setBackground(Color.decode("#009688"));
-        panelNombreArchivo.setBackground(Color.decode("#009688"));
         panelAviso.setBackground(Color.decode("#009688"));
         panelInferior.setBackground(Color.decode("#009688"));
 
         campoPoblacion.setBackground(Color.decode("#BDBDBD"));
         campoPoblacion.setBorder(BorderFactory.createLineBorder(Color.decode("#757575")));
         campoPoblacion.setForeground(Color.decode("#212121"));
-
-        campoNombreArchivo.setBackground(Color.decode("#BDBDBD"));
-        campoNombreArchivo.setBorder(BorderFactory.createLineBorder(Color.decode("#757575")));
-        campoNombreArchivo.setForeground(Color.decode("#212121"));
 
         campoTamX.setBackground(Color.decode("#BDBDBD"));
         campoTamX.setBorder(BorderFactory.createLineBorder(Color.decode("#757575")));
@@ -149,7 +127,6 @@ public class Interfaz extends JFrame{
         campoTamY.setForeground(Color.decode("#212121"));
 
         etiquetaCantidadRestricciones.setForeground(Color.decode("#FFFFFF"));
-        etiquetaNombreArchivo.setForeground(Color.decode("#FFFFFF"));
         etiquetaPoblacion.setForeground(Color.decode("#FFFFFF"));
         etiquetaTam.setForeground(Color.decode("#FFFFFF"));
         etiquetaTamX.setForeground(Color.decode("#FFFFFF"));
@@ -164,14 +141,12 @@ public class Interfaz extends JFrame{
         etiquetaCantidadRestricciones.setFont(new Font("Sans Regular", Font.BOLD, 12));
         tresRestricciones.setFont(new Font("Sans Regular", Font.BOLD, 12));
         cuatroRestricciones.setFont(new Font("Sans Regular", Font.BOLD, 12));
-        etiquetaNombreArchivo.setFont(new Font("Sans Regular", Font.BOLD, 12));
         etiquetaPoblacion.setFont(new Font("Sans Regular", Font.BOLD, 12));
         etiquetaTam.setFont(new Font("Sans Regular", Font.BOLD, 12));
         etiquetaTamX.setFont(new Font("Sans Regular", Font.BOLD, 12));
         etiquetaTamY.setFont(new Font("Sans Regular", Font.BOLD, 12));
         aviso.setFont(new Font("Sans Regular", Font.BOLD, 12));
         campoPoblacion.setFont(new Font("Sans Regular", Font.BOLD, 12));
-        campoNombreArchivo.setFont(new Font("Sans Regular", Font.BOLD, 12));
         campoTamX.setFont(new Font("Sans Regular", Font.BOLD, 12));
         campoTamY.setFont(new Font("Sans Regular", Font.BOLD, 12));
 
@@ -186,7 +161,6 @@ public class Interfaz extends JFrame{
     private void borrado() {
         tresRestricciones.setSelected(true);
         cuatroRestricciones.setSelected(false);
-        campoNombreArchivo.setText("");
         campoPoblacion.setText("");
         campoTamX.setText("");
         campoTamY.setText("");
@@ -200,19 +174,15 @@ public class Interfaz extends JFrame{
     private JPanel panelAviso;
     private JPanel panelTam;
     private JPanel panelTamXY;
-    private JPanel panelNombreArchivo;
     private JRadioButton tresRestricciones, cuatroRestricciones;
     private ButtonGroup cantidadRestricciones;
     private JButton botonContinuar;
     private JLabel etiquetaPoblacion, etiquetaCantidadRestricciones;
     private JTextField campoPoblacion, campoTamX, campoTamY;
-    private JTextField campoNombreArchivo;
     private JLabel aviso, etiquetaTamX, etiquetaTamY, etiquetaTam;
-    private JLabel etiquetaNombreArchivo;
     private KeyListener listener;
     private Configuracion c;
     private int numeroRestricciones;
     private int tamX, tamY;
     private int numeroPoblacion;
-    private String nombreArchivo;
 }

@@ -1,17 +1,15 @@
 public class Configuracion {
-    public Configuracion(int numeroRestricciones, int tamX, int tamY, int numeroPoblacion, String archivo) {
+    public Configuracion(int numeroRestricciones, int tamX, int tamY, int numeroPoblacion) {
         this.numeroRestricciones = numeroRestricciones;
         this.numeroPoblacion = numeroPoblacion;
         this.tamX = tamX;
         this.tamY = tamY;
-        this.archivo = archivo;
     }
 
     public int getNumeroRestricciones() { return this.numeroRestricciones; }
     public int getTamX() { return this.tamX; }
     public int getTamY() { return this.tamY; }
     public int getNumeroPoblaion() { return this.numeroPoblacion; }
-    public String getNombreArchivo() { return this.archivo; }
 
     public void setNumeroRestricciones(int numeroRestricciones) {
         this.numeroRestricciones = numeroRestricciones;
@@ -27,10 +25,6 @@ public class Configuracion {
 
     public void setNumeroPoblacion(int numeroPoblacion) {
         this.numeroPoblacion = numeroPoblacion;
-    }
-
-    public void setArchivo(String archivo) {
-        this.archivo = archivo;
     }
 
     public double calcularError(Restriccion[] r) {
@@ -53,7 +47,6 @@ public class Configuracion {
     private int numeroRestricciones;
     private int tamX, tamY;
     private int numeroPoblacion;
-    private String archivo;
     private double errorRelativo;
     private final double ERROR = 0.025;
 }

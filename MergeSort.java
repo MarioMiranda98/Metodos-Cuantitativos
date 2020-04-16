@@ -53,9 +53,4 @@ public class MergeSort {
             k++;
         }
     }
-
-    /*private void mostrarArreglo() {
-        for(int i = 0; i < longitud; i++)
-            System.out.println(integrantes[i].getFitness());
-    }*/
 }

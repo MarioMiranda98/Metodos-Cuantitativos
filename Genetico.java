@@ -8,14 +8,14 @@ public class Genetico {
         cantidadRestricciones = conf.getNumeroRestricciones();
         tamX = conf.getTamX();
         tamY = conf.getTamY();
-        nombreArchivo = conf.getNombreArchivo();
         tamPoblacion = conf.getNumeroPoblaion();
         errorMinimo = conf.calcularError(restricciones);
 
+        bandera = true;
         negX = negY = false;
         mjx = mjy = k = 0;
-        escritor = new Escritor(nombreArchivo);
-        tiempo = new Tiempo();
+        iteracion = 0;
+        tiempo = new Tiempo(Genetico.this);
         mergeSort = new MergeSort();
         
         obtenerLimites();
@@ -30,21 +30,43 @@ public class Genetico {
         
         z = new FuncionObjetivo(cantidadRestricciones, restricciones);
 
+        tiempo.setTiempo(0);
         iniciarAlgoritmo();
-        new InterfazResultados(restricciones, integrantesFinal[MAX_ITERACIONES - 1], conf);
+        new InterfazResultados(restricciones, integrantesFinal[0], conf);
     }
 
-    private void iniciarAlgoritmo() {
+    public boolean getBandera() { return this.bandera; }
+    public void setBandera(boolean bandera) { this.bandera = bandera; }
+
+    protected void iniciarAlgoritmo() {
         integrantesFinal = new Integrante[MAX_ITERACIONES];
         generarIntegrantes();
-        for(int i = 0; i < MAX_ITERACIONES; i++) {
+        new Thread(tiempo).start();
+
+        while((iteracion < MAX_ITERACIONES) && (this.getBandera())) {
+            System.out.println("Iteracion: " + (iteracion + 1));
             calcularFitness();
             seleccion();
             mergeSort.ordenamiento(integrantes, 0, (tamPoblacion - 1));
-            integrantesFinal[i] = integrantes[tamPoblacion - 1];
+            integrantesFinal[iteracion] = integrantes[0];
+            iteracion += 1;
         }
 
-        mergeSort.ordenamiento(integrantesFinal, 0, (MAX_ITERACIONES - 1));
+        for(int i = 0; i < iteracion; i++) {
+            System.out.println("Mejor Integrante iteracion " + (i + 1));
+            System.out.println("Binario: " + integrantesFinal[i].getBinario());
+            System.out.println("X: " + integrantesFinal[i].getValX() + " Y: " + integrantesFinal[i].getValY());
+            System.out.println("Fitness (Z): " + integrantesFinal[i].getFitness());
+            System.out.println("");
+        }
+
+        mergeSort.ordenamiento(integrantesFinal, 0, (iteracion - 1));
+
+        System.out.println("Mejor Integrante");
+        System.out.println("Binario: " + integrantesFinal[0].getBinario());
+        System.out.println("X: " + integrantesFinal[0].getValX() + " Y: " + integrantesFinal[0].getValY());
+        System.out.println("Fitness (Z): " + integrantesFinal[0].getFitness());
+        System.out.println("");        
     }
 
     private void obtenerLimites() {
@@ -63,7 +85,7 @@ public class Genetico {
         if(negY)
             limiteMenorY = (-1) * tamY;
         else 
-            limiteMenorX = 0;
+            limiteMenorY = 0;
 
         limiteMayorX = tamX; 
         limiteMayorY = tamY;
@@ -126,6 +148,9 @@ public class Genetico {
     private void calcularFitness() {
         for(int i = 0; i < tamPoblacion; i++) {
             integrantes[i].setFitness(z.evaluarFuncionObjetivo(integrantes[i]));
+            System.out.println("Binario: " + integrantes[i].getBinario());
+            System.out.println("X: " + integrantes[i].getValX() + " Y: " +integrantes[i].getValY());
+            System.out.println("Fitness (Z): " + integrantes[i].getFitness());
         }
     }
 
@@ -147,8 +172,9 @@ public class Genetico {
 		}
 
         for(int i = 0; i < numTorneos; i++) {
-            for(int j = 0; j < TAM_TORNEO; j++)
+            for(int j = 0; j < TAM_TORNEO; j++) {
                 torneo[j] = integrantes[numerosAleatorios[j]];
+            }
             mergeSort.ordenamiento(torneo, 0, (TAM_TORNEO - 1));
 
             tmpInt[i] = torneo[0];
@@ -176,7 +202,8 @@ public class Genetico {
 			numerosAleatorios[posicion] = tmp2;
 		}
 
-
+        System.out.println("Cruce");
+        System.out.println("");
         for(int i = 0; i < (tamPoblacion - numPadres); i++) {
             int a1 = (int) (Math.floor(Math.random() * (0 - numPadres) + numPadres));
             int a2 = (int) (Math.floor(Math.random() * (0 - numPadres) + numPadres));
@@ -204,8 +231,14 @@ public class Genetico {
 
             if(k > 0)
                 i--;
-            else 
+            else {
                 tmp[i + (numPadres)] = hijo;
+                tmp[i + (numPadres)].setFitness(z.evaluarFuncionObjetivo(tmp[i + (numPadres)]));
+                System.out.println("Nuevo hijo");
+                System.out.println("Binario: " + hijo.getBinario());
+                System.out.println("X: " + hijo.getValX() + " Y: " + hijo.getValY());
+                System.out.println("Fitness: " + integrantes[i].getFitness());
+            }
         }
 
         integrantes = tmp;
@@ -213,41 +246,51 @@ public class Genetico {
 
     private void mutacion() {
         for(int i = 0; i < tamPoblacion; i++) {
-            integrantes[i].mutar();
-            
-            double x = integrantes[i].valorDecimalX(limiteMenorX, limiteMayorX, mjx);
-            double y = integrantes[i].valorDecimalY(limiteMenorX, limiteMayorX, mjx);
-            
-            integrantes[i].setValX(x);
-            integrantes[i].setValY(y);
+            int m = integrantes[i].mutar();
 
-            int k = Restriccion.evaluarRestricciones(restricciones, cantidadRestricciones, x, y);
+            if(m == 1) { //Significa que muto
+                double x = integrantes[i].valorDecimalX(limiteMenorX, limiteMayorX, mjx);
+                double y = integrantes[i].valorDecimalY(limiteMenorX, limiteMayorX, mjx);
+            
+                integrantes[i].setValX(x);
+                integrantes[i].setValY(y);
 
-            if(k > 0)
-                i--;
+                int k = Restriccion.evaluarRestricciones(restricciones, cantidadRestricciones, x, y);
+
+                if(k > 0)
+                    i--;
+                else {
+                    integrantes[i].setFitness(z.evaluarFuncionObjetivo(integrantes[i]));
+                    System.out.println("");
+                    System.out.println("Integrante mutado");
+                    System.out.println("Binario: " + integrantes[i].getBinario());
+                    System.out.println("X: " + integrantes[i].getValX() + " Y: " + integrantes[i].getValY());
+                    System.out.println("Fitness: " + integrantes[i].getFitness());
+                }
+            }
         }
     }
 
     private Configuracion conf;
     private Restriccion[] restricciones;
     private final int MAX_ITERACIONES = 100;
-    private final int MAX_TIEMPO = 60;
+    public final int MAX_TIEMPO = 120;
     private int cantidadRestricciones;
     private final int BITS_PRESICION = 4;
     private int longitudCadenaCromosomas;
     private int tamX, tamY;
     private int limiteMayorX, limiteMenorX;
     private int limiteMayorY, limiteMenorY;
-    private String nombreArchivo;
     private int tamPoblacion;
     private double errorMinimo;
     private boolean negX, negY;
     private Integrante[] integrantes;
     private int mjx, mjy, k;
     private FuncionObjetivo z;
-    private Escritor escritor;
     private Tiempo tiempo;
     private MergeSort mergeSort;
     private final int TAM_TORNEO = 5;
     private Integrante[] integrantesFinal;
+    private boolean bandera;
+    private int iteracion;
 }

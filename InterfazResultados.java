@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -16,7 +15,7 @@ public class InterfazResultados extends JFrame {
 
     private void interfaz() {
         setTitle("Resultados");
-        setBounds(375, 100, 600, 400);
+        setBounds(375, 100, 600, 200);
         setResizable(false);
 
         panelPrincipal = new JPanel();
@@ -40,13 +39,7 @@ public class InterfazResultados extends JFrame {
             r[i] = new JLabel("");
         }
 
-        area = new JTextArea(50, 50);
-        cargarArchivo = new JButton("Archivo");
-        graficar = new JButton("Graficar");
         otra = new JButton("Otra");
-
-        area.setLineWrap(true);
-        area.setEditable(false);
 
         panelPrincipal.setBackground(Color.decode("#009688"));
         panelCentral.setBackground(Color.decode("#009688"));
@@ -55,11 +48,6 @@ public class InterfazResultados extends JFrame {
         panelResultados.setBackground(Color.decode("#009688"));
         panelArea.setBackground(Color.decode("#009688"));
         panelBotones.setBackground(Color.decode("#009688"));
-
-        area.setForeground(Color.decode("#212121"));
-        area.setFont(new Font("Sans Regular", Font.BOLD, 12));
-        area.setBackground(Color.decode("#BDBDBD"));
-        area.setBorder(BorderFactory.createLineBorder(Color.decode("#757575")));
 
         resultado.setForeground(Color.decode("#FFFFFF"));
         resultado.setFont(new Font("Sans Regular", Font.BOLD, 14));
@@ -104,10 +92,7 @@ public class InterfazResultados extends JFrame {
         panelResultados.add(xRes);
         panelResultados.add(yRes);
         
-        panelArea.add(new JScrollPane(area));
         panelBotones.add(otra);
-        panelBotones.add(cargarArchivo);
-        panelBotones.add(graficar);
         panelCentral.add(panelResultados);
         panelCentral.add(panelArea);
         panelInferior.add(panelBotones);
@@ -122,52 +107,12 @@ public class InterfazResultados extends JFrame {
     }
 
     private void accionBotones() {
-        cargarArchivo.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser jf = new JFileChooser();
-                jf.requestFocus();
-                if(jf.showOpenDialog(InterfazResultados.this) == JFileChooser.APPROVE_OPTION) {
-                    File f = jf.getSelectedFile();
-                    leeArchivo(f);
-                }
-            }
-        });
-
-        graficar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(InterfazResultados.this, "Si da tiempo lo hago");
-            } 
-        });
-
         otra.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String nombre = JOptionPane.showInputDialog(InterfazResultados.this, "Nombre del nuevo archivo");
-                if(nombre != null) {
-                    conf.setArchivo(nombre);
-                    new Genetico(conf, restricciones);
-                    setVisible(false);
-                }
+                setVisible(false);
+                new Genetico(conf, restricciones);
             }
         });
-    }
-
-    private void leeArchivo(File f) {
-        try {
-            FileReader entrada = new FileReader(f.getPath());
-            BufferedReader buffer = new BufferedReader(entrada);
-            String linea = "";
-
-            while(true) {
-                linea = buffer.readLine();
-
-                if(linea == null)
-                    break;
-
-                area.append(linea);
-            }
-
-            buffer.close();
-        } catch(Exception e) { e.printStackTrace(); }
     }
 
     private Restriccion[] restricciones;
@@ -209,7 +154,5 @@ public class InterfazResultados extends JFrame {
         "r4: "
     };
 
-    private JTextArea area;
-    private JButton cargarArchivo, graficar;
     private JButton otra;
 }
