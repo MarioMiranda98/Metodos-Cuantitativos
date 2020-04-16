@@ -1,6 +1,15 @@
+/*
+    Clase donde se crea el modelo de una restriccion,
+    esta hecha especialmente para restricciones pertenecientes
+    al problema de trilateracion.
+*/
+
 public class Restriccion {
     public Restriccion() {}
 
+    //Constructor de la clase
+    //Recibimos los parametros para cada componente Ej: (x - 3.3) 
+    //Donde xi, yi y ri, son las constantes
     public Restriccion(double xi, double yi, double ri) {
         this.xi = xi;
         this.yi = yi;
@@ -24,6 +33,9 @@ public class Restriccion {
     public void setErrorMinimo(double errorMinimo) { this.errorMinimo = errorMinimo; }
     public void setCumplida(boolean cumplida) { this.cumplida = cumplida; }
 
+    //Metodo donde se evalua si una restriccion se satisface
+    //Si se cumple la bandera nombrada "cumplida" coloca su valor en verdadero
+    //No devuelve ningun valor
     protected void evaluarRestriccion() {
         double resX, resY, resR;
         double res;
@@ -38,6 +50,9 @@ public class Restriccion {
             cumplida = true;
     }
 
+    //Metodo donde se evalua un conjunto de restricciones 
+    //Si la restriccion no lo cumple la variable k aumenta su valor
+    //Devuelve un entero el cual indica el numero de restricciones no satisfechas - 1
     protected static int evaluarRestricciones(Restriccion[] restricciones, int cantidadRestricciones, double x, double y) {
         int k = 0;
 

@@ -1,3 +1,6 @@
+/*
+    Clase donde se crea la interfaz donde se despliegan los resultados.
+*/
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -110,7 +113,7 @@ public class InterfazResultados extends JFrame {
         otra.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                new Genetico(conf, restricciones);
+                new Genetico(conf, restricciones);//LLamada de nuevo al algoritmo para realizarse de nueva cuenta con el mismo planteamiento.
             }
         });
     }

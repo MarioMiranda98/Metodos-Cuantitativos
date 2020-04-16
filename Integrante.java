@@ -1,4 +1,10 @@
+/*
+    Clase donde se modela un integrante de la poblacion.
+*/
 public class Integrante {
+    //Constructor de la clase, donde recibe como parametros 
+    //La longitud de la cadena de cromosomas y la cantidad 
+    //de bits "X" y "Y" que conforman la cadena.
     public Integrante(int longitud, int bitsX, int bitsY) {
         this.longitud = longitud;
         this.bitsX = bitsX;
@@ -21,30 +27,36 @@ public class Integrante {
     public void setValX(double valX) { this.valX = valX; }
     public void setValY(double valY) { this.valY = valY; }
 
+    //Metodo que se encarga de mutar el cromosoma.
+    //Retorna un entero 1 si muto, 0 si no existio cambio
     protected int mutar() {
         int muto = 0;
-        int posicion = (int) Math.floor((Math.random() * (0 - longitud) + (longitud)));
-        double p = Math.random();
+        int posicion = (int) Math.floor((Math.random() * (0 - longitud) + (longitud))); //Calculamos una posicion del bit a cambiar
+        double p = Math.random();//Obtenemos un numero entre 0.0 y 1 que servira para ver si pasa la probabilidad de mutacion
         char[] aux = new char[longitud];
 
         for(int i = 0; i < longitud; i++)
             aux[i] = this.binario.charAt(i);
 
-        if(p > PROB_MUTACION) {
-            if(aux[posicion] == '1')
+        if(p > PROB_MUTACION) {//Checamos si el integrante es apto para mutar
+            if(aux[posicion] == '1')//Checamos el valor actual de la posicion para ver como mutarlo
                 aux[posicion] = '0';
             else 
                 aux[posicion] = '1';
 
             this.binario = new String(aux);
 
-            this.setBinario(binario);
-            muto = 1;
+            this.setBinario(binario);//Colocamos el nuevo binario
+            muto = 1;//Cambiamos el valor que indica la mutacion
         }
 
-        return muto;
+        return muto;//Regresamos el indicador
     }
 
+    //Metodo que se encarga de convertir a valor decimal la parte de la cadena 
+    //correspondiente a los bits de X.
+    //Recibe los limites como parametros y la cantidad de bits de X.
+    //Retorna el valor decimal.
     protected double valorDecimalX(int limiteMenorX, int limiteMayorX, int mjx) {
         double exp = Math.pow(2, mjx);
         double fraccion = ((limiteMayorX - limiteMenorX) / (exp - 1));
@@ -55,6 +67,10 @@ public class Integrante {
         return res;
     }
 
+    //Metodo que se encarga de convertir a valor decimal la parte de la cadena 
+    //correspondiente a los bits de Y.
+    //Recibe los limites como parametros y la cantidad de bits de Y.
+    //Retorna el valor decimal.
     protected double valorDecimalY(int limiteMenorY, int limiteMayorY, int mjy) {
         double exp = Math.pow(2, mjy);
         double fraccion = ((limiteMayorY - limiteMenorY) / (exp - 1));
@@ -65,6 +81,9 @@ public class Integrante {
         return res;
     }
 
+    //Metodo que se encarga de convertir una cadena binaria a decimal
+    //Recibe como parametros el inicio y fin de la cadena
+    //Retorna el valor decimal de su binario correspondiente.
     private long binarioADecimal(int bits, int inicio) {
         char[] aux = new char[bits];
         int suma = 0;

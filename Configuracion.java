@@ -1,3 +1,8 @@
+/*
+    Clase donde guardamos el planteamiento incial del problema, 
+    numero de restricciones, tamaño del primer cuadrante y el 
+    tamaño de la poblacion.
+*/
 public class Configuracion {
     public Configuracion(int numeroRestricciones, int tamX, int tamY, int numeroPoblacion) {
         this.numeroRestricciones = numeroRestricciones;
@@ -27,6 +32,10 @@ public class Configuracion {
         this.numeroPoblacion = numeroPoblacion;
     }
 
+    //Metodo donde calculamos el error relativo para las restricciones
+    //Recibe como parametro las restricciones, ya que como sabemos 
+    //la funcion objetivo es la suma al cuadrado de cada restriccion
+    //Retorna un double con el error calculado.
     public double calcularError(Restriccion[] r) {
         double xi, yi, ri, fo, op;
         xi = yi = ri = fo = 0;

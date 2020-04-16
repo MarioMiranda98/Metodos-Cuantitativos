@@ -1,3 +1,7 @@
+/*
+    Clase sobre la cual se desarrolla la interfaz donde se piden las restricciones para 
+    el planteamiento del problema 
+*/
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -159,7 +163,7 @@ public class InterfazRestricciones extends JFrame {
 
         botonResolver.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new Genetico(conf, res);
+                new Genetico(conf, res);//Creamos el objeto donde se lleva a cabo el algoritmo
                 setVisible(false);
             }
         });

@@ -1,3 +1,7 @@
+/*
+    Clase que modela la funcion objetivo y se encarga de evaluarla para los valores "x" 
+    e "y" de un integrante "i" de la poblacion.
+*/
 public class FuncionObjetivo {
     public FuncionObjetivo(int cantidadRestricciones, Restriccion[] restricciones) {
         this.cantidadRestricciones = cantidadRestricciones;
@@ -16,6 +20,12 @@ public class FuncionObjetivo {
         this.restricciones = restricciones;
     }
 
+    //Metodo que se encarga de evaluar la funcion objetivo de acuerdo a los 
+    //valores "x" e "y" de un integrante.
+    //Recibe como parametro un integrante de la poblacion
+    //Retorna un numero decimal como el resultado de la evaluacion
+    //Debido a la propiedad Min(Z) = Max(-Z) se multiplica por -1
+    //Este valor sera tomado como el fitness (aptitud) del integrante recibido.
     protected double evaluarFuncionObjetivo(Integrante integrante) {
         double x, y;
         double xi, yi, ri;

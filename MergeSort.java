@@ -1,3 +1,9 @@
+/*
+    Clase donde se realiza el ordenamiento por mezcla.
+    Este al ser divide y venceras tiene un complejidad
+    O(nlog(n)) en los tres casos, la cual es buena para 
+    ordenar en poco tiempo las poblaciones que mandemos
+*/
 public class MergeSort {
     public MergeSort() { }
 

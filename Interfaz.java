@@ -1,3 +1,6 @@
+/*
+    Clase donde se crea la primera interfaz donde se piden los datos para desarrollar el problema
+*/
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -36,6 +39,7 @@ public class Interfaz extends JFrame{
 
         botonContinuar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                //Validacion de campo no vacio
                 if((!campoPoblacion.getText().equals("")) || (!campoTamX.getText().equals("")) || (!campoTamY.getText().equals(""))) {
                     numeroRestricciones = Integer.parseInt(cantidadRestricciones.getSelection().getActionCommand());
                     tamX = Integer.parseInt(campoTamX.getText());
@@ -54,6 +58,7 @@ public class Interfaz extends JFrame{
         listener = new KeyAdapter() {
             public void keyPressed(KeyEvent arg0) {
                 if(arg0.getKeyCode() == 10) {
+                    //Validacion de campo no vacio
                     if((!campoPoblacion.getText().equals("")) || (!campoTamX.getText().equals("")) || (!campoTamY.getText().equals(""))) {
                         numeroRestricciones = Integer.parseInt(cantidadRestricciones.getSelection().getActionCommand());
                         tamX = Integer.parseInt(campoTamX.getText());
