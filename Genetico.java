@@ -311,7 +311,7 @@ public class Genetico {
     private int[] numerosAleatorios(int inicio, int fin) {
         int[] numerosAleatorios = new int[fin];
 		
-		numerosAleatorios = IntStream.rangeClosed(0, (fin - 1)).toArray();
+		numerosAleatorios = IntStream.rangeClosed(inicio, (fin - 1)).toArray();
 
 		Random r = new Random();
 
