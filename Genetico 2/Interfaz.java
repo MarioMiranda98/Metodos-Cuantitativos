@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -59,12 +61,14 @@ public class Interfaz extends JFrame {
         latitud = new JLabel[TOTAL_RESTRICCIONES];
         longitud = new JLabel[TOTAL_RESTRICCIONES];
         distancia = new JLabel[TOTAL_RESTRICCIONES];
+        restricciones = new Restriccion[TOTAL_RESTRICCIONES];
 
         for(int i = 0; i < TOTAL_RESTRICCIONES; i++) {
             id[i] = new JLabel(idS[i]);
             latitud[i] = new JLabel(latitudS[i]);
             longitud[i] = new JLabel(longitudS[i]);
             distancia[i] = new JLabel(distanciaS[i]);
+            restricciones[i] = new Restriccion();
         }
 
         panelPrincipal.setLayout(new BorderLayout(5, 5));
@@ -125,6 +129,11 @@ public class Interfaz extends JFrame {
         fuenteTexto(campoDistancia);
         fuenteTexto(campoPoblacion);
 
+        colocarBorde(panelIzquierda);
+        colocarBorde(panelDerecho);
+        colocarBorde(panelPoblacion);
+        colocarBorde(panelRestricciones);
+
         botonRestriccion.setFont(new Font("Sans Regular", Font.BOLD, 12));
         botonContinuar.setFont(new Font("Sans Regular", Font.BOLD, 12));
 
@@ -146,9 +155,9 @@ public class Interfaz extends JFrame {
         panelIzquierda.add(panelLatitud);
         panelIzquierda.add(panelLongitud);
         panelIzquierda.add(panelDistancia);
-        panelIzquierda.add(panelPoblacion);
         panelIzquierda.add(panelCombo);
         panelIzquierda.add(panelBoton);
+        panelIzquierda.add(panelPoblacion);
 
         panelSuperiorDerecha.add(new JLabel("Restricciones"));
         panelBotonC.add(botonContinuar);
@@ -166,15 +175,40 @@ public class Interfaz extends JFrame {
         botonRestriccion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int pos = comboRestricciones.getSelectedIndex();
-                latitud[pos].setText(campoLatitud.getText());
-                longitud[pos].setText(campoLongitud.getText());
-                distancia[pos].setText(campoDistancia.getText());
+                double tLatitud = Double.parseDouble(campoLatitud.getText());
+                double tLongitud = Double.parseDouble(campoLongitud.getText());
+                double tDistancia = Double.parseDouble(campoDistancia.getText());
+
+                latitud[pos].setText(Double.toString(tLatitud));
+                longitud[pos].setText(Double.toString(tLongitud));
+                distancia[pos].setText(Double.toString(tDistancia));
+
+                restricciones[pos].setLatitud(tLatitud);
+                restricciones[pos].setLongitud(tLongitud);
+                restricciones[pos].setRi(tDistancia);
+
+                restricciones[pos].convertirACartesianas();
+
+                borrado();
             }
         });
 
         botonContinuar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println("A la escucha");
+                configuracion = new Configuracion(Integer.parseInt(campoPoblacion.getText()));
+                campoPoblacion.setText("");
+
+                for(int i = 0; i < TOTAL_RESTRICCIONES; i++) {
+                    System.out.println("Latitud: " + restricciones[i].getLatitud());
+                    System.out.println("Longitud: " + restricciones[i].getLongitud());
+                    System.out.println("Xi: " + restricciones[i].getXi());
+                    System.out.println("Yi: " + restricciones[i].getYi());
+                    System.out.println("R: " + restricciones[i].getRi());
+                    System.out.printf("\n");
+                }
+
+                double error = configuracion.calcularError(restricciones);
+                System.out.println(error);
             } 
         });
     }
@@ -190,6 +224,16 @@ public class Interfaz extends JFrame {
 
     private void fuenteTexto(JTextField campo) {
         campo.setFont(new Font("Sans Regular", Font.BOLD, 12));
+    }
+
+    private void colocarBorde(JPanel p) {
+        p.setBorder(new LineBorder(Color.decode(BLANCO)));
+    }
+    
+    private void borrado() {
+        campoLatitud.setText("");
+        campoLongitud.setText("");
+        campoDistancia.setText("");
     }
 
     private JPanel panelPrincipal;
@@ -226,6 +270,8 @@ public class Interfaz extends JFrame {
     private JLabel[] longitud;
     private JLabel[] latitud;
     private JLabel[] distancia;
+    private Restriccion[] restricciones;
+    private Configuracion configuracion;
 
     private String[] idS = {
         "R1",
