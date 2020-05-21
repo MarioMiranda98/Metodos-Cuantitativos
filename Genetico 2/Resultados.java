@@ -41,11 +41,11 @@ public class Resultados extends JFrame {
     
     private void crearInterfaz() {
         setTitle("Resultados");
-        setBounds(450, 150, 600, 400);
+        setBounds(450, 150, 600, 200);
         setResizable(false);
         
         panelPrincipal.setLayout(new BorderLayout(5, 5));
-        panelIzquierdo.setLayout(new BoxLayout(this.panelIzquierdo, BoxLayout.Y_AXIS));
+        panelIzquierdo.setLayout(new BorderLayout(5, 5));
         panelDerecho.setLayout(new BoxLayout(this.panelDerecho, BoxLayout.Y_AXIS));
         panelCartesianas.setLayout(new BoxLayout(this.panelCartesianas, BoxLayout.Y_AXIS));
         panelGPS.setLayout(new BoxLayout(this.panelGPS, BoxLayout.Y_AXIS));
@@ -91,7 +91,7 @@ public class Resultados extends JFrame {
         colocarBorde(panelRestricciones);
         colocarBorde(panelBoton);
 
-        otraVez.setFont(new Font("Sans Regular", 12, Font.BOLD));
+        otraVez.setFont(new Font("Sans Regular", Font.BOLD, 12));
 
         xRes.setText("X: " + integrante.getValX());
         yRes.setText("Y: " + integrante.getValY());
@@ -105,12 +105,12 @@ public class Resultados extends JFrame {
         panelGPS.add(longitudRes);
         panelBoton.add(otraVez);
 
-        panelIzquierdo.add(panelCartesianas);
-        panelIzquierdo.add(panelGPS);
+        panelIzquierdo.add(panelCartesianas, BorderLayout.CENTER);
+        panelIzquierdo.add(panelGPS, BorderLayout.SOUTH);
         panelDerecho.add(panelRestricciones);
 
         panelPrincipal.add(panelIzquierdo, BorderLayout.WEST);
-        panelPrincipal.add(panelDerecho, BorderLayout.EAST);
+        panelPrincipal.add(panelDerecho, BorderLayout.CENTER);
         panelPrincipal.add(panelBoton, BorderLayout.SOUTH);
 
         add(panelPrincipal);
