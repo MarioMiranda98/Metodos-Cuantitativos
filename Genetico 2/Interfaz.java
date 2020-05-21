@@ -1,6 +1,5 @@
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -13,6 +12,28 @@ public class Interfaz extends JFrame {
         setResizable(false);
 
         crearInterfaz();
+
+        listener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int pos = Integer.parseInt(e.getActionCommand());
+                double tLatitud = Double.parseDouble(campoLatitud.getText());
+                double tLongitud = Double.parseDouble(campoLongitud.getText());
+                double tDistancia = Double.parseDouble(campoDistancia.getText());
+
+                latitud[pos].setText(Double.toString(tLatitud));
+                longitud[pos].setText(Double.toString(tLongitud));
+                distancia[pos].setText(Double.toString(tDistancia));
+
+                restricciones[pos].setLatitud(tLatitud);
+                restricciones[pos].setLongitud(tLongitud);
+                restricciones[pos].setRi(tDistancia);
+
+                restricciones[pos].convertirACartesianas();
+
+                borrado();
+            }
+        };
+        
         componentesEscucha();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,8 +48,8 @@ public class Interfaz extends JFrame {
         panelLongitud = new JPanel();
         panelPoblacion = new JPanel();
         panelDistancia = new JPanel();
-        panelCombo = new JPanel();
-        panelBoton = new JPanel();
+        panelBotonRestriccion = new JPanel();
+        panelBotonRestriccion2 = new JPanel();
         panelSuperiorDerecha = new JPanel();
         panelRestricciones = new JPanel();
         panelBotonC = new JPanel();
@@ -48,14 +69,16 @@ public class Interfaz extends JFrame {
         campoPoblacion = new JTextField(12);
         campoDistancia = new JTextField(12);
 
-        comboRestricciones = new JComboBox<>();
-        botonRestriccion = new JButton("A\u00f1adir");
         botonContinuar = new JButton("Resolver");
+        botonRestriccion1 = new JButton("Restriccion 1");
+        botonRestriccion2 = new JButton("Restriccion 2");
+        botonRestriccion3 = new JButton("Restriccion 3");
+        botonRestriccion4 = new JButton("Restriccion 4");
 
-        comboRestricciones.addItem("Restriccion 1");
-        comboRestricciones.addItem("Restriccion 2");
-        comboRestricciones.addItem("Restriccion 3");
-        comboRestricciones.addItem("Restriccion 4");
+        botonRestriccion1.setActionCommand("0");
+        botonRestriccion2.setActionCommand("1");
+        botonRestriccion3.setActionCommand("2");
+        botonRestriccion4.setActionCommand("3");
 
         id = new JLabel[TOTAL_RESTRICCIONES];
         latitud = new JLabel[TOTAL_RESTRICCIONES];
@@ -78,8 +101,8 @@ public class Interfaz extends JFrame {
         panelLongitud.setLayout(new BoxLayout(this.panelLongitud, BoxLayout.Y_AXIS));
         panelPoblacion.setLayout(new BoxLayout(this.panelPoblacion, BoxLayout.Y_AXIS));
         panelDistancia.setLayout(new BoxLayout(this.panelDistancia, BoxLayout.Y_AXIS));
-        panelCombo.setLayout(new BoxLayout(this.panelCombo, BoxLayout.Y_AXIS));
-        panelBoton.setLayout(new BoxLayout(this.panelBoton, BoxLayout.Y_AXIS));
+        panelBotonRestriccion.setLayout(new BoxLayout(this.panelBotonRestriccion, BoxLayout.X_AXIS));
+        panelBotonRestriccion2.setLayout(new BoxLayout(this.panelBotonRestriccion2, BoxLayout.X_AXIS));
         panelRestricciones.setLayout(new GridLayout(5, 4, 5, 5));
 
         personalizarEtiquetas(etiquetaLatitud);
@@ -118,11 +141,11 @@ public class Interfaz extends JFrame {
         colorearPanel(panelLatitud);
         colorearPanel(panelPoblacion);
         colorearPanel(panelBotonC);
-        colorearPanel(panelBoton);
+        colorearPanel(panelBotonRestriccion2);
         colorearPanel(panelSuperiorDerecha);
         colorearPanel(panelRestricciones);
         colorearPanel(panelDistancia);
-        colorearPanel(panelCombo);
+        colorearPanel(panelBotonRestriccion);
 
         fuenteTexto(campoLatitud);
         fuenteTexto(campoLongitud);
@@ -134,7 +157,10 @@ public class Interfaz extends JFrame {
         colocarBorde(panelPoblacion);
         colocarBorde(panelRestricciones);
 
-        botonRestriccion.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        botonRestriccion1.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        botonRestriccion2.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        botonRestriccion3.setFont(new Font("Sans Regular", Font.BOLD, 12));
+        botonRestriccion4.setFont(new Font("Sans Regular", Font.BOLD, 12));
         botonContinuar.setFont(new Font("Sans Regular", Font.BOLD, 12));
 
         panelLatitud.add(etiquetaLatitud);
@@ -148,15 +174,17 @@ public class Interfaz extends JFrame {
         
         panelDistancia.add(etiquetaDistancia);
         panelDistancia.add(campoDistancia);
-        
-        panelCombo.add(comboRestricciones);
-        panelBoton.add(botonRestriccion);
+
+        panelBotonRestriccion.add(botonRestriccion1);
+        panelBotonRestriccion.add(botonRestriccion2);
+        panelBotonRestriccion2.add(botonRestriccion3);
+        panelBotonRestriccion2.add(botonRestriccion4);
 
         panelIzquierda.add(panelLatitud);
         panelIzquierda.add(panelLongitud);
         panelIzquierda.add(panelDistancia);
-        panelIzquierda.add(panelCombo);
-        panelIzquierda.add(panelBoton);
+        panelIzquierda.add(panelBotonRestriccion);
+        panelIzquierda.add(panelBotonRestriccion2);
         panelIzquierda.add(panelPoblacion);
 
         panelSuperiorDerecha.add(new JLabel("Restricciones"));
@@ -172,43 +200,18 @@ public class Interfaz extends JFrame {
     }
 
     private void componentesEscucha() {
-        botonRestriccion.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int pos = comboRestricciones.getSelectedIndex();
-                double tLatitud = Double.parseDouble(campoLatitud.getText());
-                double tLongitud = Double.parseDouble(campoLongitud.getText());
-                double tDistancia = Double.parseDouble(campoDistancia.getText());
-
-                latitud[pos].setText(Double.toString(tLatitud));
-                longitud[pos].setText(Double.toString(tLongitud));
-                distancia[pos].setText(Double.toString(tDistancia));
-
-                restricciones[pos].setLatitud(tLatitud);
-                restricciones[pos].setLongitud(tLongitud);
-                restricciones[pos].setRi(tDistancia);
-
-                restricciones[pos].convertirACartesianas();
-
-                borrado();
-            }
-        });
+        botonRestriccion1.addActionListener(listener);
+        botonRestriccion2.addActionListener(listener);
+        botonRestriccion3.addActionListener(listener);
+        botonRestriccion4.addActionListener(listener);
 
         botonContinuar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 configuracion = new Configuracion(Integer.parseInt(campoPoblacion.getText()));
                 campoPoblacion.setText("");
 
-                for(int i = 0; i < TOTAL_RESTRICCIONES; i++) {
-                    System.out.println("Latitud: " + restricciones[i].getLatitud());
-                    System.out.println("Longitud: " + restricciones[i].getLongitud());
-                    System.out.println("Xi: " + restricciones[i].getXi());
-                    System.out.println("Yi: " + restricciones[i].getYi());
-                    System.out.println("R: " + restricciones[i].getRi());
-                    System.out.printf("\n");
-                }
-
-                double error = configuracion.calcularError(restricciones);
-                System.out.println(error);
+                new Genetico(configuracion, restricciones);
+                setVisible(false);
             } 
         });
     }
@@ -243,8 +246,8 @@ public class Interfaz extends JFrame {
     private JPanel panelLongitud;
     private JPanel panelPoblacion;
     private JPanel panelDistancia;
-    private JPanel panelCombo;
-    private JPanel panelBoton;
+    private JPanel panelBotonRestriccion;
+    private JPanel panelBotonRestriccion2;
     private JPanel panelSuperiorDerecha;
     private JPanel panelRestricciones;
     private JPanel panelBotonC;
@@ -260,9 +263,11 @@ public class Interfaz extends JFrame {
     private JTextField campoLongitud;
     private JTextField campoPoblacion;
     private JTextField campoDistancia;
-    private JComboBox<String> comboRestricciones;
-    private JButton botonRestriccion;
     private JButton botonContinuar;
+    private JButton botonRestriccion1;
+    private JButton botonRestriccion2;
+    private JButton botonRestriccion3;
+    private JButton botonRestriccion4;
     private final String GRIS = "#9E9E9E";
     private final String BLANCO = "#FFFFFF";
     private final int TOTAL_RESTRICCIONES = 4;
@@ -272,6 +277,7 @@ public class Interfaz extends JFrame {
     private JLabel[] distancia;
     private Restriccion[] restricciones;
     private Configuracion configuracion;
+    private ActionListener listener;
 
     private String[] idS = {
         "R1",

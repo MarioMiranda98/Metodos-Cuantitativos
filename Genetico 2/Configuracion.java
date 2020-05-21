@@ -38,7 +38,7 @@ public class Configuracion {
         return errorAbsoulto;
     }
 
-    private final int CANTIDAD_RESTRICCIONES = 4;
+    protected final int CANTIDAD_RESTRICCIONES = 4;
     private final double CORRECTOR = 1000000;
     private int numeroPoblacion;
     private double errorAbsoulto;

@@ -49,7 +49,7 @@ public class Restriccion {
         resR = Math.pow(ri, 2);
 
         res = resX + resY - resR;
-
+        
         if(res <= errorMinimo) 
             cumplida = true;
     }
