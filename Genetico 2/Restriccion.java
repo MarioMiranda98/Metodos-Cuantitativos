@@ -71,7 +71,10 @@ public class Restriccion {
 
         return k;
     }
-
+    
+    //Metodo donde se convierte la restriccion de coordenadas GPS a coordenadas Cartesianas.
+    //No recibe parametros.
+    //No tiene retorno.
     protected void convertirACartesianas() {
         double xT, yT;
         double sexagecimal;

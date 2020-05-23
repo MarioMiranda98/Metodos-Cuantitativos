@@ -1,3 +1,7 @@
+/*
+    Clase donde se crea la nueva interfaz para recibir las coordenadas en GPS.
+*/
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;

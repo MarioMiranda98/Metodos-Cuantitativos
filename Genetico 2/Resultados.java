@@ -8,6 +8,7 @@ import java.awt.event.*;
 
 public class Resultados extends JFrame {
     private static final long serialVersionUID = 2L;
+    //Constructor de la clase, recibe un arreglo de restricciones, un integrante y la configuración.
     public Resultados(Restriccion[] restricciones, Integrante integrante, Configuracion conf) {
         this.restricciones = restricciones;
         this.integrante = integrante;
@@ -20,6 +21,11 @@ public class Resultados extends JFrame {
         botonesAlaEscucha();
     }
 
+    //Funcion donde se convierte de cartesianas a coordenadas a GPS.
+    //Convierte las coordenadas cartesianas a GPS, tomando las coordenadas
+    //del integrante con mejor aptitud.
+    //No recibe parametros.
+    //No tiene retorno.
     private void convertirAGPS() {
         double xT, yT;
         double iSexagecimal;

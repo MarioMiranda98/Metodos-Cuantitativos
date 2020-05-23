@@ -79,7 +79,7 @@ public class Genetico {
 
     //Metodo que se encarga de obtener los limites que puede tomar cada variable
     //No recibe parametros, ni retorna.
-    //Se verifica que en las restricciones la existencia de coordenadas negativas,
+    //Se ajusta a los limites de acuerdo al mas grande y mas pequeño se cierra.
     //Sino las hay el limite inferior se toma como 0 automaticamente.
     private void obtenerLimites() {
         double mayorX = 0;

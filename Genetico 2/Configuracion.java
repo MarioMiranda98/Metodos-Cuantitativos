@@ -14,7 +14,7 @@ public class Configuracion {
         this.numeroPoblacion = numeroPoblacion;
     }
 
-    //Metodo donde calculamos el error relativo para las restricciones
+    //Metodo donde calculamos el error absoluto para las restricciones
     //Recibe como parametro las restricciones, ya que como sabemos 
     //la funcion objetivo es la suma al cuadrado de cada restriccion
     //Retorna un double con el error calculado.
